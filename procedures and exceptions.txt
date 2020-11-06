@@ -1,0 +1,115 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| client_details     |
+| employee1          |
+| employeedetails    |
+| information_schema |
+| mysql              |
+| performance_schema |
+| project_details    |
+| std_marks          |
+| student            |
+| student_marks      |
+| sudha              |
+| sys                |
+| users              |
++--------------------+
+13 rows in set (0.00 sec)
+
+mysql> use student;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_student |
++-------------------+
+| student           |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select *from student;
++--------+------------+-----------+------------+-----------+-----------+
+| std_id | first_name | last_name | birth_day  | branch_id | sub       |
++--------+------------+-----------+------------+-----------+-----------+
+|      1 | sathya     | sai       | 1998-05-06 |      1778 | maths     |
+|      2 | sri        | lokesh    | 1999-01-17 |      1568 | physics   |
+|      3 | valluri    | ramya     | 1997-10-12 |      1875 | chemistry |
+|      4 | mohan      | murali    | 1999-10-25 |     20875 | maths     |
+|      5 | sai        | pallavi   | 1998-01-29 |      2175 | english   |
+|      6 | sai        | charitha  | 1998-10-09 |      5175 | chemistry |
++--------+------------+-----------+------------+-----------+-----------+
+6 rows in set (0.26 sec)
+
+set serveroutput on;
+
+DECLARE
+	sid student.std_id%type;
+	fname student.first_name%type;
+	lname student.last_name%type;
+	bday student.birth_day%type;
+        bid student.branch_id%type;
+        subj student.branch_id%type;
+	-- Exception name declared below
+	already_exist EXCEPTION;
+	-- pragma statement to provide name to numbered exception
+	pragma exception_init(already_exist, -1);
+BEGIN
+	sid:=&std_id;
+	fname:='&first_name';
+	lname:=&'last_name';
+	bday:='&birth_day';
+        bid:=&branch_id;
+        subj:=&'sub';
+	INSERT into student values(sid,fname,lname,bday,bid,subj);
+	dbms_output.put_line('Record inserted');
+	EXCEPTION
+		WHEN already_exist THEN
+			dbms_output.put_line('Record already exist');
+END;
+
+
+Enter the value for sid:1
+Enter the value for fname:raj
+Enter the value for lname:shekar
+Enter the value for bday:2000-09-15
+Enter the value for bid:521
+Enter the value for subj:maths
+Record already exist
+PL/SQL procedure successfully completed
+DECLARE
+       var_dividend NUMBER :=10;
+       var_divisor  NUMBER :=0
+       var_result NUMBER;
+       ex-DivZero EXCEPTION
+BEGIN
+IF var_divisor =0 THEN
+RAISE ex-DivZero;
+END IF;
+Var_result := var_dividend/var_divisor;
+DBMS_OUTPUT.PUT_LINE (‘Result = ‘ || var_result);
+BEGIN
+IF var_divisor =0 THEN
+RAISE ex-DivZero;
+END IF;
+Var_result := var_dividend/var_divisor;
+DBMS_OUTPUT.PUT_LINE (‘Result = ‘ || var_result);
+END;
+DECLARE  
+   c_id customers.id%type := 5;  
+   c_name  customers.name%type;  
+   c_addr customers.address%type;  
+BEGIN  
+   SELECT  name, address INTO  c_name, c_addr  
+   FROM customers  
+   WHERE id = c_id;  
+DBMS_OUTPUT.PUT_LINE ('Name: '||  c_name);  
+ DBMS_OUTPUT.PUT_LINE ('Address: ' || c_addr);  
+EXCEPTION  
+   WHEN no_data_found THEN  
+      dbms_output.put_line('No such customer!');  
+   WHEN others THEN  
+      dbms_output.put_line('Error!');  
+END;  
+/   
+
